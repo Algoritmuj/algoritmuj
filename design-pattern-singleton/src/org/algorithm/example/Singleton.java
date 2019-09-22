@@ -11,6 +11,7 @@ class Singleton {
 	public static Singleton getInstance() {
 
 		if (instance == null) {
+			// blok kódu, kde je tøeba zajistit synchronizaci mezi více vlákny
 			synchronized (Singleton.class) {
 				if (instance == null) {
 					instance = new Singleton();
