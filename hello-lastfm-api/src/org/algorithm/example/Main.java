@@ -23,14 +23,14 @@ public class Main {
 	
 	static {
 		try (InputStream input = Main.class.getClassLoader().getResourceAsStream("config.properties")) {
-            prop = new Properties();
-            if (input == null) {
-                System.out.println("Sorry, unable to find config.properties");
-            }
-            prop.load(input);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+			prop = new Properties();
+			if (input == null) {
+			    System.out.println("Sorry, unable to find config.properties");
+			}
+			prop.load(input);
+		} catch (IOException ex) {
+		    ex.printStackTrace();
+		}
 	}
 	
 	public static void main(String[] args) {
@@ -56,9 +56,10 @@ public class Main {
 		boolean isFirst = true;
 		while(iter.hasNext()) {
 			Track track = iter.next();
-			System.out.println((isFirst?"Scrobbling now":("Scrobbled " + DATETIME_FORMAT.format(track.getPlayedWhen()))) + ": " + track.getName() + " (" + track.getArtist() + ")");
+			System.out.println(
+					(isFirst?"Scrobbling now":("Scrobbled " + DATETIME_FORMAT.format(track.getPlayedWhen()))) + 
+					": " + track.getName() + " (" + track.getArtist() + ")");
 			isFirst = false;
 		}
 	}
-
 }
