@@ -1,4 +1,4 @@
-/src/config.properties
+/conf/config.properties
 /.settings/
 /build/
 /target/
