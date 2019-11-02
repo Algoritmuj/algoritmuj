@@ -102,7 +102,7 @@ public class StravaAuthorizationFilter implements Filter {
 			} catch(Exception e) {
 				LOG.error("Error while read token response", e);
 			}
-		}catch(Exception e ) {
+		} catch(Exception e ) {
 			LOG.error("Error while refresh access token", e);
 		}
 	}

@@ -38,7 +38,7 @@ public class Strava {
 			result.append(line);
 		}
 		
-		LOG.info(result.toString());
+		//LOG.info(result.toString());
 		
 		try {
 			Gson gson = new Gson();
@@ -47,7 +47,7 @@ public class Strava {
 				
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LOG.error("Error while retrieve athlete", e);
 		}
 		
 		return null;
@@ -77,7 +77,7 @@ public class Strava {
 			result.append(line);
 		}
 		
-		LOG.info(result.toString());
+		//LOG.info(result.toString());
 		
 		try {
 			Gson gson = new Gson();
@@ -107,5 +107,37 @@ public class Strava {
 			page += 1;
 		} while (page < 10);
 		return result;
+	}
+	
+	public static Activity activity(Long id) throws ClientProtocolException, IOException {
+		CloseableHttpClient client = HttpClientBuilder.create().build();
+		HttpGet req = new HttpGet(String.format("https://www.strava.com/api/v3/activities/%s", id));
+		req.addHeader("accept", "application/json");
+		req.addHeader("Authorization","Bearer " + AccessToken.getInstance().getToken());
+		
+		HttpResponse resp = client.execute(req);
+		int responseCode = resp.getStatusLine().getStatusCode();
+		
+		BufferedReader rd = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
+		StringBuffer result = new StringBuffer();
+		String line = "";
+		while ((line = rd.readLine()) != null) {
+			result.append(line);
+		}
+		
+		//LOG.info(result.toString());
+		
+		try {
+			Gson gson = new Gson();
+			if(responseCode == 200) {
+				return gson.fromJson(result.toString(), Activity.class);
+			} else {
+				LOG.warn("Cannot get activities");
+			}
+		} catch(Exception e) {
+			LOG.error("Response error", e);
+		}
+		
+		return null;
 	}
 }
