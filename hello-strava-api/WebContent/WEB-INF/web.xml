@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
+  <display-name>hello-strava-api</display-name>
+  
+  <listener>
+     <listener-class>org.algorithm.example.AppContextListener</listener-class>
+  </listener>
+   
+  <filter>
+  	<filter-name>StravaAuthorizationFilter</filter-name>
+  	<filter-class>org.algorithm.example.filter.StravaAuthorizationFilter</filter-class>
+  </filter> 
+  
+  <filter-mapping>
+  	<filter-name>StravaAuthorizationFilter</filter-name>
+  	<url-pattern>/api/*</url-pattern>
+  </filter-mapping>
+  
+  <servlet>
+  	<servlet-name>ApiServlet</servlet-name>
+  	<servlet-class>org.algorithm.example.servlet.ApiServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>ApiServlet</servlet-name>
+  	<url-pattern>/api/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>StravaAuthorizationServlet</servlet-name>
+  	<servlet-class>org.algorithm.example.servlet.StravaAuthorizationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>StravaAuthorizationServlet</servlet-name>
+  	<url-pattern>/authorization</url-pattern>
+  </servlet-mapping>
+</web-app>
