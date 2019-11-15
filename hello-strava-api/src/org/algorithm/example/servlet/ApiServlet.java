@@ -29,6 +29,12 @@ public class ApiServlet extends HttpServlet {
 	}
 	
 	protected void doProcess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String id = req.getParameter("id");
+		if(id != null && !id.isEmpty()) {
+			Long activityId = Long.parseLong(id);
+			req.setAttribute("activity", Strava.activity(activityId));
+		}
+		
 		req.setAttribute("activities", Strava.activities());
 		req.getRequestDispatcher("strava.jsp").forward(req, resp);
 	}

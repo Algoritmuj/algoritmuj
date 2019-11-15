@@ -9,10 +9,14 @@
 		<title>Strava API</title>
 	</head>
 	<body>
+		<c:if test="${not empty activity}">
+			Name: ${activity.name}<br />
+			Distance: ${activity.distance}
+		</c:if>
 		<c:if test="${not empty activities}">
 			<ul>
 				<c:forEach var="activity" items="${activities}">
-					<li>${activity.name}</li>
+					<li><a href="?id=${activity.id}">${activity.name}</a></li>
 				</c:forEach>
 			</ul>
 		</c:if>
