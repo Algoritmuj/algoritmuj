@@ -8,10 +8,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Properties;
 
+import de.umass.lastfm.Album;
 import de.umass.lastfm.Artist;
 import de.umass.lastfm.Caller;
 import de.umass.lastfm.Chart;
 import de.umass.lastfm.PaginatedResult;
+import de.umass.lastfm.Period;
+import de.umass.lastfm.Session;
 import de.umass.lastfm.Track;
 import de.umass.lastfm.User;
 
@@ -60,6 +63,41 @@ public class Main {
 					(isFirst?"Scrobbling now":("Scrobbled " + DATETIME_FORMAT.format(track.getPlayedWhen()))) + 
 					": " + track.getName() + " (" + track.getArtist() + ")");
 			isFirst = false;
+		}
+		
+		// user top tracks
+		Collection<Track> tracks = User.getTopTracks(user, Period.ONE_MONTH, key);
+		for(Track track : tracks) {
+			System.out.println(track.getName() + " (" + track.getArtist() + ")");
+		}
+		
+		// album info
+		Album album = Album.getInfo("U2", "Achtung Baby", key);
+		System.out.println(
+				album.getName() + " (" + 
+				album.getArtist() + "), listeners: " + 
+				album.getListeners() + ", percentage change: " + 
+				album.getPercentageChange() + ", play count: " + 
+				album.getPlaycount()
+		);
+		System.out.println();
+		
+		// top artists from chart
+		for(Artist artist : Chart.getTopArtists(key)) {
+			System.out.println(artist.getName());
+		}
+		System.out.println();
+		
+		// top tracks from chart
+		for(Track track : Chart.getTopTracks(key)) {
+			System.out.println(track.getName() + " (" + track.getArtist() + ")");
+		}
+		System.out.println();
+		
+		for(int i=1; i<2; i++) {
+			for(Track track : User.getLovedTracks(user, i, key)) {
+				System.out.println(track.getName() + " (" + track.getArtist() + ")");
+			}
 		}
 	}
 }
