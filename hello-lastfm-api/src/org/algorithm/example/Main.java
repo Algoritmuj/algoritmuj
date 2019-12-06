@@ -14,7 +14,6 @@ import de.umass.lastfm.Caller;
 import de.umass.lastfm.Chart;
 import de.umass.lastfm.PaginatedResult;
 import de.umass.lastfm.Period;
-import de.umass.lastfm.Session;
 import de.umass.lastfm.Track;
 import de.umass.lastfm.User;
 
@@ -42,13 +41,19 @@ public class Main {
 		String key = prop.getProperty("api_key");
 		String user = prop.getProperty("user");
 		
+		// read user info
+		User info = User.getInfo(user, key);
+		System.out.println(user + "'s info");
+		System.out.println("Name: " + info.getRealname());
+		System.out.println("Playcount: " + info.getPlaycount());
+		System.out.println("Registered: " + info.getRegisteredDate());
+		
 		// read weekly artist chart
 		Chart<Artist> chart = User.getWeeklyArtistChart(user, 10, key);
-		
 		String from = DATE_FORMAT.format(chart.getFrom());
 		String to = DATE_FORMAT.format(chart.getTo());
-		System.out.printf("Charts for %s for the week from %s to %s:%n", user, from, to);
 		Collection<Artist> artists = chart.getEntries();
+		System.out.printf("\nCharts for %s for the week from %s to %s:%n", user, from, to);
 		for (Artist artist : artists) {
 		    System.out.println(artist.getName());
 		}
@@ -57,6 +62,7 @@ public class Main {
 		PaginatedResult<Track> pages = User.getRecentTracks(user, 1, 10, key);
 		Iterator<Track> iter = pages.iterator();
 		boolean isFirst = true;
+		System.out.println("\nLast 10 recent tracks");
 		while(iter.hasNext()) {
 			Track track = iter.next();
 			System.out.println(
@@ -67,12 +73,14 @@ public class Main {
 		
 		// user top tracks
 		Collection<Track> tracks = User.getTopTracks(user, Period.ONE_MONTH, key);
+		System.out.println("Top tracks for one month");
 		for(Track track : tracks) {
 			System.out.println(track.getName() + " (" + track.getArtist() + ")");
 		}
 		
 		// album info
 		Album album = Album.getInfo("U2", "Achtung Baby", key);
+		System.out.println("Album info");
 		System.out.println(
 				album.getName() + " (" + 
 				album.getArtist() + "), listeners: " + 
@@ -83,13 +91,17 @@ public class Main {
 		System.out.println();
 		
 		// top artists from chart
-		for(Artist artist : Chart.getTopArtists(key)) {
+		PaginatedResult<Artist> topArtists = Chart.getTopArtists(key);
+		System.out.println("Top artists");
+		for(Artist artist : topArtists) {
 			System.out.println(artist.getName());
 		}
 		System.out.println();
 		
 		// top tracks from chart
-		for(Track track : Chart.getTopTracks(key)) {
+		PaginatedResult<Track> topTracks = Chart.getTopTracks(key);
+		System.out.println("Top tracks for one month");
+		for(Track track : topTracks) {
 			System.out.println(track.getName() + " (" + track.getArtist() + ")");
 		}
 		System.out.println();
